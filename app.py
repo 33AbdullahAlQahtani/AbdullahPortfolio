@@ -13,7 +13,7 @@ def hello_world():
 @app.route("/project/<id>")
 def project_details(id):
   project = load_project_from_db(id)
-  return render_template('project_details.html', project=project)
+  return render_template('project_details.html', project = project)
 
 
 @app.route("/message")
