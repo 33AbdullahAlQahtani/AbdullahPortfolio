@@ -1,26 +1,30 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from database import load_projects_from_db, load_project_from_db
 
 app = Flask(__name__)
-projects = [{
-    'id':
-    1,
-    'project':
-    'Web Scraping',
-    'skills':
-    'urllib python, Python Requests, Selenium, Beautiful Soup'
-}, {
-    'id':
-    2,
-    'project':
-    'AI model for flare monitoring',
-    'skills':
-    'Python pandas, sikitlib, matblotib, microsoft azure, pychatgpt'
-}]
 
 
 @app.route("/")
 def hello_world():
+  projects = load_projects_from_db()
   return render_template('home.html', projects=projects)
+
+
+@app.route("/project/<id>")
+def project_details(id):
+  project = load_project_from_db(id)
+  return render_template('project_details.html', project=project)
+
+
+@app.route("/message")
+def message():
+  return render_template('contactus.html')
+
+
+@app.route("/messagesub", methods=['post'])
+def message_submitted():
+  data = request.form
+  return render_template('messagesub.html', data=data)
 
 
 if __name__ == '__main__':
